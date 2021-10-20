@@ -37,9 +37,9 @@ const fn = (arr, k) => {
     // st 1 => 
     const arrMap=handleCount(arr);
     let count = 0;
-    // console.log('arrMap', arrMap)
+    // console.log(arr, 'arrMap', arrMap)
     const connect = (arr, index, k, countLength) => {
-        if(k == 0 && index == arr.length -1) return countLength;
+        if(k == 0 || index >= (arr.length-1)) return countLength;
         const ob1 = arr[index];
         const ob2 = arr[index+1];
         if(ob2.start-ob1.end <= k) {
@@ -53,12 +53,14 @@ const fn = (arr, k) => {
     const tryConnect = (arr, k) => {
         if(k<=0) return 1;
         for(let i = 0; i<arrMap.length; i++) {
-            const temp = connect(arr, 0, k, 0);
+            const temp = connect(arr, i, k, 0);
             count = Math.max(count, temp)
         }
     };
-    tryConnect(arrMap, 2);
+    tryConnect(arrMap, k);
     console.log(count);
 }
 
-fn([0,1,1,0,1,1,1,0,1,0,1,1,1,1,0])
+fn([0,1,1,0,1,1,1,0,1,0,1,1,1,1,0], 2)
+fn([0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1], 2) // 6
+fn([0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1], 3) // 9
