@@ -36,19 +36,29 @@ const handleCount = (arrInput) => {
 const fn = (arr, k) => {
     // st 1 => 
     const arrMap=handleCount(arr);
+    let count = 0;
     // console.log('arrMap', arrMap)
-    const connect = (arr, index) => {
-        const {last: l1} = arr[index];
-        const {last: l2} = arr[index+1];
-        return l2-l1;
+    const connect = (arr, index, k, countLength) => {
+        if(k == 0 && index == arr.length -1) return countLength;
+        const ob1 = arr[index];
+        const ob2 = arr[index+1];
+        if(ob2.start-ob1.end <= k) {
+            const countOne = countLength + (ob1.count + ob2.count) + (ob2.start - ob1.end);
+            const kRest = k - (ob2.start-ob1.end);
+            return connect(arr, index+1, kRest, countOne)
+        } else {
+            return countLength + k + Math.max(ob1.count, ob2.count)
+        }
     }
-    const tryConnect = (rest, arr) => {
+    const tryConnect = (arr, k) => {
         if(k<=0) return 1;
-        for(let i = 0; i<length-1; i++) {
-            connect()
+        for(let i = 0; i<arrMap.length; i++) {
+            const temp = connect(arr, 0, k, 0);
+            count = Math.max(count, temp)
         }
     };
-    tryConnect()
+    tryConnect(arrMap, 2);
+    console.log(count);
 }
 
-fn([0,1,1,0,1,1,1])
+fn([0,1,1,0,1,1,1,0,1,0,1,1,1,1,0])
